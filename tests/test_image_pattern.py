@@ -110,7 +110,7 @@ def test_version():
 
 def test_facebook():
     image = FacebookPattern(
-        TestContext(
+        context=TestContext(
             title='WHAT THIS TIME? WHAT THIS TIME? WHAT THIS TIME?',
             text='This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!!',
             image=join(ASSETS_PATH, 'Finn.jpg'),

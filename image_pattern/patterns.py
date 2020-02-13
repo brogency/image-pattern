@@ -13,9 +13,6 @@ class Pattern(BaseModel):
     canvas: Canvas
     layers: List[Layer] = []
 
-    def __init__(self, context):
-        super().__init__(context=context)
-
     def render(self):
         image = self.canvas.get_image()
 
