@@ -100,7 +100,15 @@ class FacebookPattern(Pattern):
                 ),
                 horizontal_alignment=HorizontalAlignment.RIGHT,
             ),
-        )
+        ),
+        Layer(
+            Rectangle(
+                point=Point(x=0, y=0),
+                background_color=(255, 0, 0),
+                size=(1200, 30),
+                alpha=100,
+            ),
+        ),
     ]
 
 

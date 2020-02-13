@@ -30,12 +30,13 @@ if TYPE_CHECKING:
 class RectangleDrawer(Drawer):
     brightness: int = 0
     background_image: Optional[Path]
-    background_color: Tuple[int, int, int] = (255, 255, 255)
+    background_color: Union[Tuple[int, int, int], Tuple[int, int, int, int]] = (255, 255, 255)
+    alpha: Optional[int]
     _image_mode: ImageMode = ImageMode.RGBA
 
     def draw(self, image: PillowImage) -> PillowImage:
         overlay_image = self.get_image()
-        image.paste(overlay_image, self.start_point.to_tuple())
+        image.paste(overlay_image, self.start_point.to_tuple(), mask=overlay_image)
 
         return image
 
@@ -43,7 +44,12 @@ class RectangleDrawer(Drawer):
         if self.background_image:
             image = Image.open(self.background_image)
         else:
-            image = Image.new(self._image_mode, self.size, self.background_color)
+            background_color = (
+                *self.background_color,
+                self.alpha,
+            ) if self.background_color and self.alpha is not None and \
+                 len(self.background_color) == 3 else self.background_color
+            image = Image.new(self._image_mode, self.size, background_color)
 
         image = image.convert(self._image_mode) if not image.mode == self._image_mode else image
         image = self._resize_image(image)
@@ -53,6 +59,9 @@ class RectangleDrawer(Drawer):
     def _enhance(self, image: PillowImage) -> PillowImage:
         if self.brightness:
             image = ImageEnhance.Brightness(image).enhance(self.brightness)
+
+        if self.alpha:
+            image.putalpha(self.alpha)
 
         return image
 
@@ -64,7 +73,8 @@ class Rectangle(Positioned, Canvas):
     _type: str = 'Rectangle'
     brightness: Union[int, ContextVar] = 0
     background_image: Union[Path, ContextVar, None]
-    background_color: Union[Tuple[int, int, int], ContextVar] = (255, 255, 255)
+    background_color: Union[Tuple[int, int, int], Tuple[int, int, int, int], ContextVar] = (255, 255, 255)
+    alpha: Union[int, ContextVar, None]
 
     def create_drawer(self, canvas: PillowImage, context=None):
         data = self.collect_data(context)
@@ -77,4 +87,5 @@ class Rectangle(Positioned, Canvas):
             background_image=data['background_image'],
             background_color=data['background_color'],
             start_point=start_point,
+            alpha=data['alpha'],
         )
