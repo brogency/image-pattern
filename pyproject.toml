@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "image-pattern"
-version = "0.0.1a"
+version = "0.0.1"
 description = ""
 authors = ["acrius <acrius@mail.ru>"]
 

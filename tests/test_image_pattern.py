@@ -105,7 +105,7 @@ class FacebookPattern(Pattern):
 
 
 def test_version():
-    assert __version__ == '0.0.1a'
+    assert __version__ == '0.0.1'
 
 
 def test_facebook():
