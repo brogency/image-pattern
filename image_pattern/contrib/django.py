@@ -61,7 +61,7 @@ class ImagePatternField(ImageField):
         name, path, args, kwargs = super().deconstruct()
 
         kwargs.update({
-            'pattern': self.patter,
+            'pattern': self.pattern,
             'context': self.context,
             'should_be_created': self.should_be_created,
         })
