@@ -17,7 +17,6 @@ class ImagePatternField(ImageField):
         self.pattern = pattern
         self.should_be_created_callback = should_be_created
         self.context = context
-        self.kwargs = self.extract_specific_kwargs(kwargs)
         kwargs['blank'] = True
         super().__init__(**kwargs)
 
