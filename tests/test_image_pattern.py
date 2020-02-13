@@ -113,13 +113,13 @@ class FacebookPattern(Pattern):
 
 
 def test_version():
-    assert __version__ == '0.0.3'
+    assert __version__ == '0.0.4'
 
 
 def test_facebook():
     image = FacebookPattern(
         context=TestContext(
-            title='WHAT THIS TIME? WHAT THIS TIME? WHAT THIS TIME?',
+            title='',
             text='This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!!',
             image=join(ASSETS_PATH, 'Finn.jpg'),
         ),

@@ -20,7 +20,6 @@ from .base import (
     HorizontalAlignment,
     VerticalAlignment,
     Positioned,
-    Point,
 )
 from ..context import (
     ContextVar,
@@ -107,24 +106,32 @@ class Text(Positioned):
 
     def create_drawer(self, canvas: PillowImage, context=None):
         data = self.collect_data(context)
-        bounded_width, bounded_height = self._get_bounded_size(canvas)
-        font = ImageFont.truetype(str(self.font.absolute()), size=self.font_size, encoding='UTF-8')
-        text = self._get_multiline_text(data['text'], font, bounded_width)
-        line_height = data['line_height'] or data['font_size'] + 4
-        size = font.getsize_multiline('\n'.join(text), spacing=line_height - data['font_size'])
-        start_point = self._get_start_point(size)
 
-        return TextDrawer(
-            point=data['point'],
-            font=font,
-            font_color=data['font_color'],
-            text=text,
-            line_height=line_height,
-            horizontal_alignment=data['horizontal_alignment'],
-            margin=data['margin'],
-            size=size,
-            start_point=start_point,
-        )
+        if data['text']:
+            bounded_width, bounded_height = self._get_bounded_size(canvas)
+            font = ImageFont.truetype(str(self.font.absolute()), size=self.font_size, encoding='UTF-8')
+            text = self._get_multiline_text(data['text'], font, bounded_width)
+            line_height = data['line_height'] or data['font_size'] + 4
+            size = font.getsize_multiline('\n'.join(text), spacing=line_height - data['font_size'])
+            start_point = self._get_start_point(size)
+
+            return TextDrawer(
+                point=data['point'],
+                font=font,
+                font_color=data['font_color'],
+                text=text,
+                line_height=line_height,
+                horizontal_alignment=data['horizontal_alignment'],
+                margin=data['margin'],
+                size=size,
+                start_point=start_point,
+            )
+        else:
+            return Drawer(
+                size=(0, 0),
+                point=data['point'],
+                start_point=data['point'],
+            )
 
     @staticmethod
     def _get_multiline_text(text, font: PillowImageFont, width: int) -> List[str]:
