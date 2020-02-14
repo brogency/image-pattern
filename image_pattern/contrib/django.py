@@ -23,7 +23,7 @@ class ImagePatternField(ImageField):
     def pre_save(self, instance, add):
         file = getattr(instance, self.attname)
 
-        if (not file or not file.file) and self.should_be_created(instance):
+        if self.should_be_created(instance):
             file_name = self.get_file_name()
             context = self.get_context(instance)
             image = self.pattern(context=context).render_to_blob()
