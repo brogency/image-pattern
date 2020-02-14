@@ -61,7 +61,7 @@ class RectangleDrawer(Drawer):
         if self.brightness is not None:
             image = ImageEnhance.Brightness(image).enhance(self.brightness)
 
-        if self.alpha:
+        if self.alpha is not None:
             image.putalpha(self.alpha)
 
         return image
