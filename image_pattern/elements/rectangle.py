@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 
 
 class RectangleDrawer(Drawer):
-    brightness: int = 0
+    brightness: float = 0
     background_image: Optional[Path]
     background_color: Union[Tuple[int, int, int], Tuple[int, int, int, int]] = (255, 255, 255)
     alpha: Optional[int]
@@ -53,11 +53,12 @@ class RectangleDrawer(Drawer):
 
         image = image.convert(self._image_mode) if not image.mode == self._image_mode else image
         image = self._resize_image(image)
+        image = self._enhance(image)
 
         return image
 
     def _enhance(self, image: PillowImage) -> PillowImage:
-        if self.brightness:
+        if self.brightness is not None:
             image = ImageEnhance.Brightness(image).enhance(self.brightness)
 
         if self.alpha:
@@ -71,7 +72,7 @@ class RectangleDrawer(Drawer):
 
 class Rectangle(Positioned, Canvas):
     _type: str = 'Rectangle'
-    brightness: Union[int, ContextVar] = 0
+    brightness: Union[float, ContextVar] = 0
     background_image: Union[Path, ContextVar, None]
     background_color: Union[Tuple[int, int, int], Tuple[int, int, int, int], ContextVar] = (255, 255, 255)
     alpha: Union[int, ContextVar, None]

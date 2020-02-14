@@ -33,7 +33,8 @@ class FacebookPattern(Pattern):
     layers: List[Layer] = [
         Layer(
             Rectangle(
-                background_color=(99, 99, 99),
+                background_color=(255, 255, 255),
+                brightness=0.5,
                 size=(1200, 630),
                 point=Point(
                     x=0,
@@ -113,7 +114,7 @@ class FacebookPattern(Pattern):
 
 
 def test_version():
-    assert __version__ == '0.0.4'
+    assert __version__ == '0.0.5'
 
 
 def test_facebook():
