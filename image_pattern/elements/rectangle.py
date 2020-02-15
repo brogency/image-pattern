@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 
 
 class RectangleDrawer(Drawer):
-    brightness: float = 0
+    brightness: Optional[float]
     background_image: Optional[Path]
     background_color: Union[Tuple[int, int, int], Tuple[int, int, int, int]] = (255, 255, 255)
     alpha: Optional[int]
@@ -72,7 +72,7 @@ class RectangleDrawer(Drawer):
 
 class Rectangle(Positioned, Canvas):
     _type: str = 'Rectangle'
-    brightness: Union[float, ContextVar] = 0
+    brightness: Union[float, ContextVar, None]
     background_image: Union[Path, ContextVar, None]
     background_color: Union[Tuple[int, int, int], Tuple[int, int, int, int], ContextVar] = (255, 255, 255)
     alpha: Union[int, ContextVar, None]
