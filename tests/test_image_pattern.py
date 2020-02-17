@@ -24,6 +24,7 @@ class TestContext(Context):
     image: Path
     title: str
     text: str
+    layer_exists: bool
 
 
 class FacebookPattern(Pattern):
@@ -108,12 +109,13 @@ class FacebookPattern(Pattern):
                 size=(1200, 30),
                 alpha=200,
             ),
+            exist=lambda context=None: context.layer_exists if context else True,
         ),
     ]
 
 
 def test_version():
-    assert __version__ == '0.0.9'
+    assert __version__ == '0.0.10'
 
 
 def test_facebook():
@@ -122,6 +124,7 @@ def test_facebook():
             title='',
             text='This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!! This is adventure time!!!',
             image=join(ASSETS_PATH, 'Finn.jpg'),
+            layer_exists=True,
         ),
     ).render()
     image.save(join(ASSETS_PATH, 'test.jpg'), format='JPEG')

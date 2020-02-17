@@ -17,7 +17,8 @@ class Pattern(BaseModel):
         image = self.canvas.get_image()
 
         for layer in self.layers:
-            image = layer.enhance_image(image, context=self.context)
+            if layer.exist(context=self.context):
+                image = layer.enhance_image(image, context=self.context)
 
         return image
 

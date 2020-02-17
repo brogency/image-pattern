@@ -4,6 +4,7 @@ from typing import (
     Tuple,
     Union,
     Optional,
+    Callable,
     TYPE_CHECKING,
 )
 from pydantic import BaseModel
@@ -39,6 +40,10 @@ class Area(BaseModel):
         return width_offset, height_offset
 
 
+def default_exist(context=None):
+    return True
+
+
 class Layer(BaseModel):
     elements: List[
         Union[
@@ -46,10 +51,12 @@ class Layer(BaseModel):
             Text,
         ]
     ]
+    exist: Callable
 
-    def __init__(self, *args):
+    def __init__(self, *args, exist=None):
         elements = args
-        super().__init__(elements=elements)
+        exist = exist or default_exist
+        super().__init__(elements=elements, exist=exist)
 
     def enhance_image(self, image: Image, context: Optional[Context] = None) -> Image:
         drawers = sorted(
