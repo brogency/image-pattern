@@ -63,7 +63,7 @@ class ImagePatternField(ImageField):
         kwargs.update({
             'pattern': self.pattern,
             'context': self.context,
-            'should_be_created': self.should_be_created,
+            'should_be_created': self.should_be_created_callback,
         })
 
         return name, path, args, kwargs
