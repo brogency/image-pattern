@@ -112,7 +112,7 @@ class Text(Positioned):
         data = self.collect_data(context)
 
         if data['text']:
-            bounded_width, bounded_height = self._get_bounded_size(canvas)
+            bounded_width, bounded_height = self._get_bounded_size(canvas, margin=data['margin'])
             font = ImageFont.truetype(str(self.font.absolute()), size=self.font_size, encoding='UTF-8')
             text = self._get_multiline_text(data['text'], font, bounded_width)
             line_height = data['line_height'] or data['font_size'] + 4
@@ -145,29 +145,31 @@ class Text(Positioned):
 
         return text_lines
 
-    def _get_bounded_size(self, canvas: PillowImage) -> Tuple[int, int]:
+    def _get_bounded_size(self, canvas: PillowImage, margin: Position = None) -> Tuple[int, int]:
         width, height = canvas.size
 
-        bounded_width = self._get_bounded_width(width)
+        bounded_width = self._get_bounded_width(width, margin=margin)
         bounded_height = self._get_bounded_height(height)
 
         return bounded_width, bounded_height
 
-    def _get_bounded_width(self, width: int) -> int:
+    def _get_bounded_width(self, width: int, margin: Position = None) -> int:
+        margin = margin or Position()
         if self.horizontal_alignment == HorizontalAlignment.LEFT.value:
-            bounded_width = width - self.point.x - self.margin.right
+            bounded_width = width - self.point.x - margin.right
         elif self.horizontal_alignment == HorizontalAlignment.RIGHT.value:
-            bounded_width = self.point.x - self.margin.left
+            bounded_width = self.point.x - margin.left
         else:
             raise ValueError('Horizontal alignment must be LEFT or RIGHT')
 
         return bounded_width
 
-    def _get_bounded_height(self, height: int) -> int:
+    def _get_bounded_height(self, height: int, margin: Position = None) -> int:
+        margin = margin or Position()
         if self.vertical_alignment == VerticalAlignment.TOP:
-            bounded_height = height - self.point.y - self.margin.bottom
+            bounded_height = height - self.point.y - margin.bottom
         elif self.vertical_alignment == VerticalAlignment.BOTTOM:
-            bounded_height = self.point.y - self.margin.top
+            bounded_height = self.point.y - margin.top
         else:
             raise ValueError('Vertical alignment must be TOP or BOTTOM')
 
