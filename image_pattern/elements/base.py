@@ -8,7 +8,7 @@ from typing import (
     TYPE_CHECKING,
 )
 from enum import Enum
-from pydantic import BaseModel
+from pydantic import BaseModel, Extra
 
 from ..context import ContextVar
 
@@ -23,12 +23,18 @@ class Point(BaseModel):
     def to_tuple(self) -> Tuple[int, int]:
         return self.x, self.y
 
+    class Config:
+        extra = Extra.forbid
+
 
 class Position(BaseModel):
     top: int = 0
     right: int = 0
     bottom: int = 0
     left: int = 0
+
+    class Config:
+        extra = Extra.forbid
 
 
 class HorizontalAlignment(str, Enum):
