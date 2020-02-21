@@ -102,7 +102,11 @@ class Text(Positioned):
     font_color: Union[Tuple[int, int, int], ContextVar] = (0, 0, 0)
     text: Union[str, ContextVar]
     line_height: Union[int, ContextVar, None]
-    margin: Union[Position, ContextVar] = Position()
+    margin: Union[Position, ContextVar, None]
+
+    def __init__(self, **kwargs):
+        kwargs['margin'] = kwargs.get('margin', Position())
+        super().__init__(**kwargs)
 
     def create_drawer(self, canvas: PillowImage, context=None):
         data = self.collect_data(context)
