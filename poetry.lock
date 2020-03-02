@@ -24,6 +24,15 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 version = "0.4.3"
 
 [[package]]
+category = "main"
+description = "A backport of the dataclasses module for Python 3.6"
+marker = "python_version < \"3.7\""
+name = "dataclasses"
+optional = false
+python-versions = "*"
+version = "0.6"
+
+[[package]]
 category = "dev"
 description = "Read metadata from Python packages"
 marker = "python_version < \"3.8\""
@@ -80,6 +89,11 @@ optional = false
 python-versions = ">=3.6"
 version = "1.4"
 
+[package.dependencies]
+[package.dependencies.dataclasses]
+python = "<3.7"
+version = ">=0.6"
+
 [[package]]
 category = "dev"
 description = "pytest: simple powerful testing with Python"
@@ -116,13 +130,14 @@ python-versions = ">=3.6"
 version = "2.2.0"
 
 [metadata]
-content-hash = "18182a72de7e75dccbc59ab50aef21935fb3c60b4bfcd554717ae43575145991"
-python-versions = "^3.7"
+content-hash = "7ab8b99bedbd5ee70e5241bd2b90714ca5437bd561016be673a6841bf6d8ff63"
+python-versions = "^3.6"
 
 [metadata.hashes]
 atomicwrites = ["03472c30eb2c5d1ba9227e4c2ca66ab8287fbfbbda3888aa93dc2e28fc6811b4", "75a9445bac02d8d058d5e1fe689654ba5a6556a1dfd8ce6ec55a0ed79866cfa6"]
 attrs = ["08a96c641c3a74e44eb59afb61a24f2cb9f4d7188748e76ba4bb5edfa3cb7d1c", "f7b7ce16570fe9965acd6d30101a28f62fb4a7f9e926b3bbc9b61f8b04247e72"]
 colorama = ["7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff", "e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"]
+dataclasses = ["454a69d788c7fda44efd71e259be79577822f5e3f53f029a22d08004e951dc9f", "6988bd2b895eef432d562370bb707d540f32f7360ab13da45340101bc2307d84"]
 importlib-metadata = ["06f5b3a99029c7134207dd882428a66992a9de2bef7c2b699b5641f9886c3302", "b97607a1a18a5100839aec1dc26a1ea17ee0d93b20b0f008d80a5a050afb200b"]
 more-itertools = ["5dd8bcf33e5f9513ffa06d5ad33d78f31e1931ac9a18f33d37e77a180d393a7c", "b1ddb932186d8a6ac451e1d95844b382f55e12686d51ca0c68b6f61f2ab7a507"]
 pillow = ["0a628977ac2e01ca96aaae247ec2bd38e729631ddf2221b4b715446fd45505be", "4d9ed9a64095e031435af120d3c910148067087541131e82b3e8db302f4c8946", "54ebae163e8412aff0b9df1e88adab65788f5f5b58e625dc5c7f51eaf14a6837", "5bfef0b1cdde9f33881c913af14e43db69815c7e8df429ceda4c70a5e529210f", "5f3546ceb08089cedb9e8ff7e3f6a7042bb5b37c2a95d392fb027c3e53a2da00", "5f7ae9126d16194f114435ebb79cc536b5682002a4fa57fa7bb2cbcde65f2f4d", "62a889aeb0a79e50ecf5af272e9e3c164148f4bd9636cc6bcfa182a52c8b0533", "7406f5a9b2fd966e79e6abdaf700585a4522e98d6559ce37fc52e5c955fade0a", "8453f914f4e5a3d828281a6628cf517832abfa13ff50679a4848926dac7c0358", "87269cc6ce1e3dee11f23fa515e4249ae678dbbe2704598a51cee76c52e19cda", "875358310ed7abd5320f21dd97351d62de4929b0426cdb1eaa904b64ac36b435", "8ac6ce7ff3892e5deaab7abaec763538ffd011f74dc1801d93d3c5fc541feee2", "91b710e3353aea6fc758cdb7136d9bbdcb26b53cefe43e2cba953ac3ee1d3313", "9d2ba4ed13af381233e2d810ff3bab84ef9f18430a9b336ab69eaf3cd24299ff", "a62ec5e13e227399be73303ff301f2865bf68657d15ea50b038d25fc41097317", "ab76e5580b0ed647a8d8d2d2daee170e8e9f8aad225ede314f684e297e3643c2", "bf4003aa538af3f4205c5fac56eacaa67a6dd81e454ffd9e9f055fff9f1bc614", "bf598d2e37cf8edb1a2f26ed3fb255191f5232badea4003c16301cb94ac5bdd0", "c18f70dc27cc5d236f10e7834236aff60aadc71346a5bc1f4f83a4b3abee6386", "c5ed816632204a2fc9486d784d8e0d0ae754347aba99c811458d69fcdfd2a2f9", "dc058b7833184970d1248135b8b0ab702e6daa833be14035179f2acb78ff5636", "ff3797f2f16bf9d17d53257612da84dd0758db33935777149b3334c01ff68865"]

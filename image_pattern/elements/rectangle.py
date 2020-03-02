@@ -16,8 +16,6 @@ from .base import (
     Positioned,
     Drawer,
     ImageMode,
-    HorizontalAlignment,
-    VerticalAlignment,
 )
 from .canvas import Canvas
 from ..size import resize_image

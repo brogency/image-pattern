@@ -13,6 +13,7 @@ from image_pattern import (
     Layer,
     Text,
     HorizontalAlignment,
+    VerticalAlignment,
     Position,
     Context,
 )
@@ -111,11 +112,57 @@ class FacebookPattern(Pattern):
             ),
             exist=lambda context=None: context.layer_exists if context else True,
         ),
+        Layer(
+            Text(
+                text='FINN THE HUMAN',
+                font=join(ASSETS_PATH, 'IBMPlexSans-Regular.ttf'),
+                font_size=64,
+                font_color=(255, 255, 255),
+                point=Point(
+                    x=600,
+                    y=315,
+                ),
+                horizontal_alignment=HorizontalAlignment.CENTER,
+                vertical_alignment=VerticalAlignment.CENTER,
+            )
+        ),
+    ]
+
+
+class AvatarPattern(Pattern):
+    canvas: Canvas = Canvas(
+        size=(500, 500),
+    )
+    layers: List[Layer] = [
+        Layer(
+            Rectangle(
+                background_color=(65, 209, 46),
+                size=(500, 500),
+                point=Point(
+                    x=0,
+                    y=0,
+                ),
+            ),
+        ),
+        Layer(
+            Text(
+                text='FIN',
+                font=join(ASSETS_PATH, 'IBMPlexSans-Regular.ttf'),
+                font_size=300,
+                font_color=(255, 255, 255),
+                point=Point(
+                    x=250,
+                    y=250,
+                ),
+                horizontal_alignment=HorizontalAlignment.CENTER,
+                vertical_alignment=VerticalAlignment.CENTER,
+            ),
+        ),
     ]
 
 
 def test_version():
-    assert __version__ == '0.0.14'
+    assert __version__ == '0.0.15'
 
 
 def test_facebook():
@@ -128,3 +175,5 @@ def test_facebook():
         ),
     ).render()
     image.save(join(ASSETS_PATH, 'test.jpg'), format='JPEG')
+    avatar_image = AvatarPattern().render()
+    avatar_image.save(join(ASSETS_PATH, 'avatar_test.jpg'), format='JPEG')

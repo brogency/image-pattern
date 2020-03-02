@@ -1,6 +1,5 @@
 from __future__ import annotations
 from typing import (
-    Optional,
     List,
     Tuple,
     Union,
@@ -46,32 +45,36 @@ class TextDrawer(Drawer):
 
         for line_index, line in enumerate(text):
             font_width, _ = font.getsize(line)
+            _, height_offset = font.getoffset(line)
             x = self._get_x(font_width)
-            y = self._get_y(line_index, self.line_height)
+            y = self._get_y(line_index, self.line_height, height_offset)
             draw.text((x, y), line, font=font, fill=self.font_color)
 
         return image
 
     def _get_x(self, text_width: int) -> int:
-        if self.horizontal_alignment == HorizontalAlignment.LEFT.value:
+        if self.horizontal_alignment == HorizontalAlignment.LEFT:
             x = self.point.x
-        elif self.horizontal_alignment == HorizontalAlignment.RIGHT.value:
+        elif self.horizontal_alignment == HorizontalAlignment.RIGHT:
             x = self.point.x - text_width
+        elif self.horizontal_alignment == HorizontalAlignment.CENTER:
+            x = self.point.x - int(text_width / 2)
         else:
             raise ValueError('Horizontal alignment must be LEFT or RIGHT')
 
         return x
 
-    def _get_y(self, line_index: int, text_height: int) -> int:
-        start_y = self._get_first_line_y(self.line_height)
+    def _get_y(self, line_index: int, text_height: int, offset: int = 0) -> int:
+        start_y = self._get_first_line_y(offset=offset)
         diff = text_height * line_index
 
-        if self.vertical_alignment == VerticalAlignment.TOP.value:
+        if self.vertical_alignment == VerticalAlignment.TOP or \
+                self.vertical_alignment == VerticalAlignment.CENTER:
             y = start_y + diff
-        elif self.vertical_alignment == VerticalAlignment.BOTTOM.value:
+        elif self.vertical_alignment == VerticalAlignment.BOTTOM:
             y = start_y - diff
         else:
-            raise ValueError('Vertical alignment must be TOP or BOTTOM')
+            raise ValueError('Vertical alignment must be TOP, BOTTOM or CENTER')
 
         return y
 
@@ -81,13 +84,17 @@ class TextDrawer(Drawer):
 
         return text_lines
 
-    def _get_first_line_y(self, text_height: int):
-        if self.vertical_alignment == VerticalAlignment.TOP.value:
+    def _get_first_line_y(self, offset: int = 0):
+        _, height = self.size
+
+        if self.vertical_alignment == VerticalAlignment.TOP:
             y = self.point.y
-        elif self.vertical_alignment == VerticalAlignment.BOTTOM.value:
-            y = self.point.y - text_height
+        elif self.vertical_alignment == VerticalAlignment.BOTTOM:
+            y = self.point.y - height
+        elif self.vertical_alignment == VerticalAlignment.CENTER:
+            y = self.point.y - int(height / 2) - int(offset / 2)
         else:
-            raise ValueError('Vertical alignment must be TOP or BOTTOM')
+            raise ValueError('Vertical alignment must be TOP, BOTTOM or CENTER')
 
         return y
 
@@ -115,7 +122,7 @@ class Text(Positioned):
             bounded_width, bounded_height = self._get_bounded_size(canvas, margin=data['margin'])
             font = ImageFont.truetype(str(self.font.absolute()), size=self.font_size, encoding='UTF-8')
             text = self._get_multiline_text(data['text'], font, bounded_width)
-            line_height = data['line_height'] or data['font_size'] + 4
+            line_height = data['line_height'] or font.getsize(data['text'])[1]
             size = font.getsize_multiline('\n'.join(text), spacing=line_height - data['font_size'])
             start_point = self._get_start_point(size)
 
@@ -126,6 +133,7 @@ class Text(Positioned):
                 text=text,
                 line_height=line_height,
                 horizontal_alignment=data['horizontal_alignment'],
+                vertical_alignment=data['vertical_alignment'],
                 margin=data['margin'],
                 size=size,
                 start_point=start_point,
@@ -155,12 +163,14 @@ class Text(Positioned):
 
     def _get_bounded_width(self, width: int, margin: Position = None) -> int:
         margin = margin or Position()
-        if self.horizontal_alignment == HorizontalAlignment.LEFT.value:
+        if self.horizontal_alignment == HorizontalAlignment.LEFT:
             bounded_width = width - self.point.x - margin.right
-        elif self.horizontal_alignment == HorizontalAlignment.RIGHT.value:
+        elif self.horizontal_alignment == HorizontalAlignment.RIGHT:
             bounded_width = self.point.x - margin.left
+        elif self.horizontal_alignment == HorizontalAlignment.CENTER:
+            bounded_width = width - margin.left - margin.right
         else:
-            raise ValueError('Horizontal alignment must be LEFT or RIGHT')
+            raise ValueError('Horizontal alignment must be LEFT, RIGHT or CENTER')
 
         return bounded_width
 
@@ -170,7 +180,9 @@ class Text(Positioned):
             bounded_height = height - self.point.y - margin.bottom
         elif self.vertical_alignment == VerticalAlignment.BOTTOM:
             bounded_height = self.point.y - margin.top
+        elif self.vertical_alignment == VerticalAlignment.CENTER:
+            bounded_height = height - margin.top - margin.bottom
         else:
-            raise ValueError('Vertical alignment must be TOP or BOTTOM')
+            raise ValueError('Vertical alignment must be TOP, BOTTOM or CENTER')
 
         return bounded_height

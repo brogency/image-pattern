@@ -40,11 +40,13 @@ class Position(BaseModel):
 class HorizontalAlignment(str, Enum):
     LEFT = 'LEFT'
     RIGHT = 'RIGHT'
+    CENTER = 'CENTER'
 
 
 class VerticalAlignment(str, Enum):
     TOP = 'TOP'
     BOTTOM = 'BOTTOM'
+    CENTER = 'CENTER'
 
 
 class ImageMode(str, Enum):
@@ -82,33 +84,39 @@ class Element(Generic[T], BaseModel):
 
 class Positioned(Element):
     point: Point
-    horizontal_alignment: Union[HorizontalAlignment, ContextVar] = HorizontalAlignment.LEFT.value
-    vertical_alignment: Union[VerticalAlignment, ContextVar] = VerticalAlignment.TOP.value
+    horizontal_alignment: Union[HorizontalAlignment, ContextVar] = HorizontalAlignment.LEFT
+    vertical_alignment: Union[VerticalAlignment, ContextVar] = VerticalAlignment.TOP
 
     def _get_start_point(self, size):
         width, height = size
+        x = self._get_start_x(width)
+        y = self._get_start_y(height)
         return Point(
-            x=self._get_start_x(width),
-            y=self._get_start_y(height)
+            x= 0 if x < 0 else x,
+            y= 0 if y < 0 else y,
         )
 
     def _get_start_x(self, width: int):
-        if self.horizontal_alignment == HorizontalAlignment.LEFT.value:
+        if self.horizontal_alignment == HorizontalAlignment.LEFT:
             x = self.point.x
-        elif self.horizontal_alignment == HorizontalAlignment.RIGHT.value:
+        elif self.horizontal_alignment == HorizontalAlignment.RIGHT:
             x = self.point.x - width
+        elif self.horizontal_alignment == HorizontalAlignment.CENTER:
+            x = self.point.x - int(width / 2)
         else:
-            raise ValueError('Horizontal alignment must be LEFT or RIGHT')
+            raise ValueError('Horizontal alignment must be LEFT, RIGHT or CENTER')
 
         return x
 
     def _get_start_y(self, height: int) -> int:
-        if self.vertical_alignment == VerticalAlignment.TOP.value:
+        if self.vertical_alignment == VerticalAlignment.TOP:
             y = self.point.y
-        elif self.vertical_alignment == VerticalAlignment.BOTTOM.value:
+        elif self.vertical_alignment == VerticalAlignment.BOTTOM:
             y = self.point.y - height
+        elif self.vertical_alignment == VerticalAlignment.CENTER:
+            y = self.point.y - int(height / 2)
         else:
-            raise ValueError('Vertical alignment must be TOP or BOTTOM')
+            raise ValueError('Vertical alignment must be TOP, BOTTOM or CENTER')
 
         return y
 
