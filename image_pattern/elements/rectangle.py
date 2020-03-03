@@ -5,7 +5,7 @@ from typing import (
     Union,
     TYPE_CHECKING,
 )
-
+from io import BytesIO
 from pathlib import Path
 from PIL import (
     Image,
@@ -27,10 +27,13 @@ if TYPE_CHECKING:
 
 class RectangleDrawer(Drawer):
     brightness: Optional[float]
-    background_image: Optional[Path]
+    background_image: Union[BytesIO, Path, None]
     background_color: Union[Tuple[int, int, int], Tuple[int, int, int, int]] = (255, 255, 255)
     alpha: Optional[int]
     _image_mode: ImageMode = ImageMode.RGBA
+
+    class Config:
+        arbitrary_types_allowed = True
 
     def draw(self, image: PillowImage) -> PillowImage:
         overlay_image = self.get_image()
@@ -71,9 +74,12 @@ class RectangleDrawer(Drawer):
 class Rectangle(Positioned, Canvas):
     _type: str = 'Rectangle'
     brightness: Union[float, ContextVar, None]
-    background_image: Union[Path, ContextVar, None]
+    background_image: Union[BytesIO, Path, ContextVar, None]
     background_color: Union[Tuple[int, int, int], Tuple[int, int, int, int], ContextVar] = (255, 255, 255)
     alpha: Union[int, ContextVar, None]
+
+    class Config:
+        arbitrary_types_allowed = True
 
     def create_drawer(self, canvas: PillowImage, context=None):
         data = self.collect_data(context)
