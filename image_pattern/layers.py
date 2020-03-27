@@ -16,7 +16,7 @@ from .elements import (
     Point,
 )
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from PIL.Image import Image
 
 
@@ -31,11 +31,7 @@ class Area(BaseModel):
     def get_offset(self, point: Point):
         width, height = self.size
         width_offset = 0
-
-        if point.y < self.point.y + height:
-            height_offset = self.point.y + height - point.y
-        else:
-            height_offset = 0
+        height_offset = self.point.y + height - point.y
 
         return width_offset, height_offset
 

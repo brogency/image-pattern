@@ -7,12 +7,14 @@ from typing import (
     Generic,
     TYPE_CHECKING,
 )
+from abc import ABCMeta, abstractmethod
 from enum import Enum
 from pydantic import BaseModel, Extra
+from six import add_metaclass
 
 from ..context import ContextVar
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from PIL.Image import Image as PillowImage
 
 
@@ -66,57 +68,53 @@ class Drawer(BaseModel):
 T = TypeVar('T')
 
 
+@add_metaclass(ABCMeta)
 class Element(Generic[T], BaseModel):
+    point: Point
+    horizontal_alignment: Union[HorizontalAlignment, ContextVar] = HorizontalAlignment.LEFT
+    vertical_alignment: Union[VerticalAlignment, ContextVar] = VerticalAlignment.TOP
+
     def collect_data(self, context: T):
         return {
             field: value.get_from_context(context) if isinstance(value, ContextVar) else value
             for field, value in self._iter()
         }
 
+    @abstractmethod
     def create_drawer(self, canvas: PillowImage, context: Optional[T] = None):
-        data = self.collect_data(context)
+        raise NotImplementedError  # pragma: no cover
 
-        return Drawer(
-            point=data['point'],
-            size=(0, 0),
-        )
-
-
-class Positioned(Element):
-    point: Point
-    horizontal_alignment: Union[HorizontalAlignment, ContextVar] = HorizontalAlignment.LEFT
-    vertical_alignment: Union[VerticalAlignment, ContextVar] = VerticalAlignment.TOP
-
-    def _get_start_point(self, size):
+    def _get_start_point(
+            self,
+            horizontal_alignment: HorizontalAlignment,
+            vertical_alignment: VerticalAlignment,
+            size,
+    ):
         width, height = size
-        x = self._get_start_x(width)
-        y = self._get_start_y(height)
+        x = self._get_start_x(horizontal_alignment, width)
+        y = self._get_start_y(vertical_alignment, height)
         return Point(
-            x= 0 if x < 0 else x,
-            y= 0 if y < 0 else y,
+            x=x,
+            y=y,
         )
 
-    def _get_start_x(self, width: int):
-        if self.horizontal_alignment == HorizontalAlignment.LEFT:
+    def _get_start_x(self, horizontal_alignment: HorizontalAlignment, width: int):
+        if horizontal_alignment == HorizontalAlignment.LEFT:
             x = self.point.x
-        elif self.horizontal_alignment == HorizontalAlignment.RIGHT:
+        elif horizontal_alignment == HorizontalAlignment.RIGHT:
             x = self.point.x - width
-        elif self.horizontal_alignment == HorizontalAlignment.CENTER:
+        else:  # Center
             x = self.point.x - int(width / 2)
-        else:
-            raise ValueError('Horizontal alignment must be LEFT, RIGHT or CENTER')
 
         return x
 
-    def _get_start_y(self, height: int) -> int:
-        if self.vertical_alignment == VerticalAlignment.TOP:
+    def _get_start_y(self, vertical_alignment: VerticalAlignment, height: int) -> int:
+        if vertical_alignment == VerticalAlignment.TOP:
             y = self.point.y
-        elif self.vertical_alignment == VerticalAlignment.BOTTOM:
+        elif vertical_alignment == VerticalAlignment.BOTTOM:
             y = self.point.y - height
-        elif self.vertical_alignment == VerticalAlignment.CENTER:
+        else:  # Center
             y = self.point.y - int(height / 2)
-        else:
-            raise ValueError('Vertical alignment must be TOP, BOTTOM or CENTER')
 
         return y
 

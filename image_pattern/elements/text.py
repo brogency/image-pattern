@@ -18,13 +18,13 @@ from .base import (
     Position,
     HorizontalAlignment,
     VerticalAlignment,
-    Positioned,
+    Element,
 )
 from ..context import (
     ContextVar,
 )
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from PIL.Image import Image as PillowImage
 
 
@@ -57,32 +57,15 @@ class TextDrawer(Drawer):
             x = self.point.x
         elif self.horizontal_alignment == HorizontalAlignment.RIGHT:
             x = self.point.x - text_width
-        elif self.horizontal_alignment == HorizontalAlignment.CENTER:
+        else:  # Center
             x = self.point.x - int(text_width / 2)
-        else:
-            raise ValueError('Horizontal alignment must be LEFT or RIGHT')
 
         return x
 
     def _get_y(self, line_index: int, text_height: int, offset: int = 0) -> int:
         start_y = self._get_first_line_y(offset=offset)
         diff = text_height * line_index
-
-        if self.vertical_alignment == VerticalAlignment.TOP or \
-                self.vertical_alignment == VerticalAlignment.CENTER:
-            y = start_y + diff
-        elif self.vertical_alignment == VerticalAlignment.BOTTOM:
-            y = start_y - diff
-        else:
-            raise ValueError('Vertical alignment must be TOP, BOTTOM or CENTER')
-
-        return y
-
-    def _get_multiline_text(self, font: PillowImageFont, width: int) -> List[str]:
-        line_length = int((width / (font.getsize(self.text)[0] / len(self.text))))
-        text_lines = wrap(self.text, line_length)
-
-        return text_lines
+        return start_y + diff
 
     def _get_first_line_y(self, offset: int = 0):
         _, height = self.size
@@ -91,10 +74,8 @@ class TextDrawer(Drawer):
             y = self.point.y
         elif self.vertical_alignment == VerticalAlignment.BOTTOM:
             y = self.point.y - height
-        elif self.vertical_alignment == VerticalAlignment.CENTER:
+        else:  # Center
             y = self.point.y - int(height / 2) - int(offset / 2)
-        else:
-            raise ValueError('Vertical alignment must be TOP, BOTTOM or CENTER')
 
         return y
 
@@ -102,7 +83,7 @@ class TextDrawer(Drawer):
         arbitrary_types_allowed = True
 
 
-class Text(Positioned):
+class Text(Element):
     _type: str = 'Text'
     font: Union[Path, ContextVar]
     font_size: Union[int, ContextVar] = 12
@@ -119,12 +100,22 @@ class Text(Positioned):
         data = self.collect_data(context)
 
         if data['text']:
-            bounded_width, bounded_height = self._get_bounded_size(canvas, margin=data['margin'])
+
+            bounded_width, bounded_height = self._get_bounded_size(
+                canvas,
+                data['horizontal_alignment'],
+                data['vertical_alignment'],
+                margin=data['margin'],
+            )
             font = ImageFont.truetype(str(self.font.absolute()), size=self.font_size, encoding='UTF-8')
             text = self._get_multiline_text(data['text'], font, bounded_width)
             line_height = data['line_height'] or font.getsize(data['text'])[1]
             size = font.getsize_multiline('\n'.join(text), spacing=line_height - data['font_size'])
-            start_point = self._get_start_point(size)
+            start_point = self._get_start_point(
+                data['horizontal_alignment'],
+                data['vertical_alignment'],
+                size,
+            )
 
             return TextDrawer(
                 point=data['point'],
@@ -153,36 +144,48 @@ class Text(Positioned):
 
         return text_lines
 
-    def _get_bounded_size(self, canvas: PillowImage, margin: Position = None) -> Tuple[int, int]:
+    def _get_bounded_size(
+            self,
+            canvas: PillowImage,
+            horizontal_alignment: HorizontalAlignment,
+            vertical_alignment: VerticalAlignment,
+            margin: Position = None,
+    ) -> Tuple[int, int]:
         width, height = canvas.size
 
-        bounded_width = self._get_bounded_width(width, margin=margin)
-        bounded_height = self._get_bounded_height(height)
+        bounded_width = self._get_bounded_width(horizontal_alignment, width, margin=margin)
+        bounded_height = self._get_bounded_height(vertical_alignment, height)
 
         return bounded_width, bounded_height
 
-    def _get_bounded_width(self, width: int, margin: Position = None) -> int:
+    def _get_bounded_width(
+            self,
+            horizontal_alignment: HorizontalAlignment,
+            width: int,
+            margin: Position = None,
+    ) -> int:
         margin = margin or Position()
-        if self.horizontal_alignment == HorizontalAlignment.LEFT:
+        if horizontal_alignment == HorizontalAlignment.LEFT:
             bounded_width = width - self.point.x - margin.right
-        elif self.horizontal_alignment == HorizontalAlignment.RIGHT:
+        elif horizontal_alignment == HorizontalAlignment.RIGHT:
             bounded_width = self.point.x - margin.left
-        elif self.horizontal_alignment == HorizontalAlignment.CENTER:
+        else:  # Center
             bounded_width = width - margin.left - margin.right
-        else:
-            raise ValueError('Horizontal alignment must be LEFT, RIGHT or CENTER')
 
         return bounded_width
 
-    def _get_bounded_height(self, height: int, margin: Position = None) -> int:
+    def _get_bounded_height(
+            self,
+            vertical_alignment: VerticalAlignment,
+            height: int,
+            margin: Position = None,
+    ) -> int:
         margin = margin or Position()
-        if self.vertical_alignment == VerticalAlignment.TOP:
+        if vertical_alignment == VerticalAlignment.TOP:
             bounded_height = height - self.point.y - margin.bottom
-        elif self.vertical_alignment == VerticalAlignment.BOTTOM:
+        elif vertical_alignment == VerticalAlignment.BOTTOM:
             bounded_height = self.point.y - margin.top
-        elif self.vertical_alignment == VerticalAlignment.CENTER:
+        else:  # Center
             bounded_height = height - margin.top - margin.bottom
-        else:
-            raise ValueError('Vertical alignment must be TOP, BOTTOM or CENTER')
 
         return bounded_height

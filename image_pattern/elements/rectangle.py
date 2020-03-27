@@ -13,7 +13,7 @@ from PIL import (
 )
 
 from .base import (
-    Positioned,
+    Element,
     Drawer,
     ImageMode,
 )
@@ -21,7 +21,7 @@ from .canvas import Canvas
 from ..size import resize_image
 from ..context import ContextVar
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from PIL.Image import Image as PillowImage
 
 
@@ -71,7 +71,7 @@ class RectangleDrawer(Drawer):
         return resize_image(image, self.size)
 
 
-class Rectangle(Positioned, Canvas):
+class Rectangle(Element, Canvas):
     _type: str = 'Rectangle'
     brightness: Union[float, ContextVar, None]
     background_image: Union[BytesIO, Path, ContextVar, None]
@@ -83,7 +83,11 @@ class Rectangle(Positioned, Canvas):
 
     def create_drawer(self, canvas: PillowImage, context=None):
         data = self.collect_data(context)
-        start_point = self._get_start_point(self.size)
+        start_point = self._get_start_point(
+            data['horizontal_alignment'],
+            data['vertical_alignment'],
+            self.size,
+        )
 
         return RectangleDrawer(
             point=data['point'],

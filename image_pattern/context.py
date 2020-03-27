@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Union, Any, Generic, TypeVar
+from typing import Union, Any, TypeVar
 from pydantic import BaseModel
 
 
