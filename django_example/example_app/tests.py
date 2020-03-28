@@ -1,3 +1,4 @@
+from os import remove
 from django.test import TestCase
 from image_pattern import __version__
 
@@ -14,7 +15,7 @@ class ImagePatternTestCase(TestCase):
         self.assertEqual(__version__, '0.0.16')
 
     def test_image_create(self):
-        instance = ExampleModel(text=self.text)
+        instance: ExampleModel = ExampleModel(text=self.text)
         instance.status = Statuses.DRAFT
 
         instance.save()
@@ -27,3 +28,8 @@ class ImagePatternTestCase(TestCase):
 
         self.assertIsNotNone(instance.image.name)
         self.assertIsNotNone(instance.image_with_custom_methods.name)
+
+    def tearDown(self) -> None:
+        for instance in ExampleModel.objects.all():
+            instance.image.storage.delete(instance.image.name)
+            instance.image_with_custom_methods.storage.delete(instance.image_with_custom_methods.name)
