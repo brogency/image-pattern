@@ -1,6 +1,6 @@
 # Image Pattern
 
-![ImagePattern](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-finally.jpg)
+![ImagePattern](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-finally.jpg)
 
 image_pattern - библиотека для создания шаблонов, изображений и 
 генерации изображений из данных шаблонов с использованием изменяющегося контента.
@@ -63,7 +63,7 @@ image.save('avatar.jpg', 'JPEG')
 
 И мы получим следующее изображение:
 
-![Пустое изображение для аватара](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/empty-avatar.jpg)
+![Пустое изображение для аватара](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/empty-avatar.jpg)
 
 Теперь нам нужно задать для него контент.
 Начнем с добавления первого слоя:
@@ -107,7 +107,7 @@ image.save('avatar.jpg', 'JPEG')
 
 Запустим скрипт и получим следующее изображение:
 
-![Аватар с фоном](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-with-background.jpg)
+![Аватар с фоном](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-with-background.jpg)
 
 Что же здесь происходит:
 * Мы добавили список слоев layers, который содержит один слой.
@@ -155,7 +155,7 @@ class Avatar(Pattern):
 ...
 ```
 
-![Изображение со смещением прямоугольника и увеличением высоты](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-with-offset-height.jpg)
+![Изображение со смещением прямоугольника и увеличением высоты](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-with-offset-height.jpg)
 
 Как мы видим, правый прямоугольник сместился вниз, чтобы не пересекаться с левым прямоугольником в этом же слое.
 Правило смещения элементов очень простое - элементы всегда смещаются вниз.
@@ -186,7 +186,7 @@ class Avatar(Pattern):
 
 то мы сможем сгенерировать следующее изображение:
 
-![Изображение с наложением слоев](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avata-rwith-offset-layers.jpg)
+![Изображение с наложением слоев](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avata-rwith-offset-layers.jpg)
 
 Как мы видим, прямоугольники накладываются друг на друга.
 Это происходит потому что слои служат специально для того,
@@ -217,7 +217,7 @@ class Avatar(Pattern):
 Подробнее об элементе текст можно прочитать в разделе _API_.
 Запустив скрипт мы получим следующее изображение:
 
-![Изображение с длинным текстом](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-long-text.jpg)
+![Изображение с длинным текстом](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-long-text.jpg)
 
 Как мы видим шаблон учитывает перенос текста по словам, если для текста не хватает пространства.
 Так же мы можем указывать шрифт, выравнивание и отступы.
@@ -252,7 +252,7 @@ from image_pattern import (
 
 Мы получили следующее изображение:
 
-![Аватар с текстом по центру](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-center-text.jpg)
+![Аватар с текстом по центру](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-center-text.jpg)
 
 Хмм... Как мы видим, есть ощущение, что текст не по середине изображения.
 Однако, это не совсем так. Это происходит потому что шаблон изображения использует для выравнивания ширины всей строки.
@@ -293,7 +293,7 @@ from image_pattern import (
 
 Выполнив скрипт, мы получим следующее изображение:
 
-![Аватар](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-finally.jpg)
+![Аватар](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-finally.jpg)
 
 Замечательно!
 

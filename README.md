@@ -1,6 +1,6 @@
 # Image Pattern
 
-![ImagePattern](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-finally.jpg)
+![ImagePattern](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-finally.jpg)
 
 image_pattern - package for creating image templates and 
 generation of images from these templates using changing content.
@@ -61,7 +61,7 @@ image.save('avatar.jpg', 'JPEG')
 
 And we get the next image:
 
-![Blank image for avatar](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/empty-avatar.jpg)
+![Blank image for avatar](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/empty-avatar.jpg)
 
 Now we need to set content.
 We'll start by adding the first layer:
@@ -105,7 +105,7 @@ image.save('avatar.jpg', 'JPEG')
 
 Let's run the script and get the image:
 
-![Avatar with background](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-with-background.jpg)
+![Avatar with background](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-with-background.jpg)
 
 What's going on here:
 
@@ -154,7 +154,7 @@ class Avatar(Pattern):
 ...
 ```
 
-![Image with rectangle shift and height increase](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-with-offset-height.jpg)
+![Image with rectangle shift and height increase](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-with-offset-height.jpg)
 
 As we can see, the right rectangle has shifted to down so as not to intersect with the left rectangle in the same layer.
 The rule of shifting elements is very simple - elements are always shifted down.
@@ -185,7 +185,7 @@ But if we return the height of 200 pixels and place the rectangles in different 
 
 then we can generate the next image:
 
-![Picture with layers overlapping](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avata-rwith-offset-layers.jpg)
+![Picture with layers overlapping](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avata-rwith-offset-layers.jpg)
 
 As we can see, the rectangles are superimposed on each other.
 That's because the layers serve to specifically
@@ -216,7 +216,7 @@ For this we will need a text element and a new layer:
 You can read more about the element in the  _API_ section.
 By running the script, we get the image:
 
-![Picture with long text](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-long-text.jpg)
+![Picture with long text](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-long-text.jpg)
 
 Template takes into account the transfer of text by words, if there is not enough space for the text.
 We can also specify fonts, alignment and indents.
@@ -251,7 +251,7 @@ from image_pattern import (
 
 We got the image:
 
-![Avatar with text in the center](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-center-text.jpg)
+![Avatar with text in the center](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-center-text.jpg)
 
 Hmm... We have the feeling that the text is not in center of the image.
 However, that's not entirely true. This is because the image template is used to align the width of the entire line.
@@ -292,7 +292,7 @@ To get rid of this effect, we will try to place each letter in the center of its
 
 Having executed the script, we will get the following image:
 
-![Аватар](https://raw.githubusercontent.com/brogency/image-pattern/0.0.17/assets/avatar-finally.jpg)
+![Аватар](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-finally.jpg)
 
 Success!
 
