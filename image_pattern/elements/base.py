@@ -89,16 +89,17 @@ class Element(Generic[T], BaseModel):
             horizontal_alignment: HorizontalAlignment,
             vertical_alignment: VerticalAlignment,
             size,
+            **kwargs
     ):
         width, height = size
-        x = self._get_start_x(horizontal_alignment, width)
-        y = self._get_start_y(vertical_alignment, height)
+        x = self._get_start_x(horizontal_alignment, width, **kwargs)
+        y = self._get_start_y(vertical_alignment, height, **kwargs)
         return Point(
             x=x,
             y=y,
         )
 
-    def _get_start_x(self, horizontal_alignment: HorizontalAlignment, width: int):
+    def _get_start_x(self, horizontal_alignment: HorizontalAlignment, width: int, **kwargs):
         if horizontal_alignment == HorizontalAlignment.LEFT:
             x = self.point.x
         elif horizontal_alignment == HorizontalAlignment.RIGHT:
@@ -108,7 +109,7 @@ class Element(Generic[T], BaseModel):
 
         return x
 
-    def _get_start_y(self, vertical_alignment: VerticalAlignment, height: int) -> int:
+    def _get_start_y(self, vertical_alignment: VerticalAlignment, height: int, **kwargs) -> int:
         if vertical_alignment == VerticalAlignment.TOP:
             y = self.point.y
         elif vertical_alignment == VerticalAlignment.BOTTOM:

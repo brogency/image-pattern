@@ -3,6 +3,7 @@ from typing import (
     List,
     Tuple,
     Union,
+    Optional,
     TYPE_CHECKING,
 )
 from pathlib import Path
@@ -54,7 +55,7 @@ class TextDrawer(Drawer):
 
     def _get_x(self, text_width: int) -> int:
         if self.horizontal_alignment == HorizontalAlignment.LEFT:
-            x = self.point.x
+            x = self.point.x + self.margin.left
         elif self.horizontal_alignment == HorizontalAlignment.RIGHT:
             x = self.point.x - text_width
         else:  # Center
@@ -77,7 +78,7 @@ class TextDrawer(Drawer):
         else:  # Center
             y = self.point.y - int(height / 2) - int(offset / 2)
 
-        return y
+        return y + self.margin.top
 
     class Config:
         arbitrary_types_allowed = True
@@ -115,6 +116,7 @@ class Text(Element):
                 data['horizontal_alignment'],
                 data['vertical_alignment'],
                 size,
+                margin=data.get('margin')
             )
 
             return TextDrawer(
@@ -135,6 +137,26 @@ class Text(Element):
                 point=data['point'],
                 start_point=data['point'],
             )
+
+    def _get_start_y(
+            self,
+            vertical_alignment: VerticalAlignment,
+            height: int,
+            margin: Optional[Position] = None,
+            **kwargs,
+    ) -> int:
+        start_y = super()._get_start_y(vertical_alignment, height, **kwargs)
+        return start_y + margin.top if margin else start_y
+
+    def _get_start_x(
+            self,
+            horizontal_alignment: HorizontalAlignment,
+            width: int,
+            margin: Optional[Position] = None,
+            **kwargs,
+    ) -> int:
+        start_x = super()._get_start_x(horizontal_alignment, width, **kwargs)
+        return start_x + margin.left if margin else start_x
 
     @staticmethod
     def _get_multiline_text(text, font: PillowImageFont, width: int) -> List[str]:
