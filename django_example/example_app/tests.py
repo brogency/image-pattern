@@ -12,7 +12,7 @@ class ImagePatternTestCase(TestCase):
     text = 'What time is it?'
 
     def test_version(self):
-        self.assertEqual(__version__, '0.0.16')
+        self.assertEqual(__version__, '0.0.17')
 
     def test_image_create(self):
         instance: ExampleModel = ExampleModel(text=self.text)

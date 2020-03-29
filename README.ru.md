@@ -1,5 +1,7 @@
 # Image Pattern
 
+[![PyPI version](https://badge.fury.io/py/image-pattern.svg)](https://badge.fury.io/py/image-pattern)
+
 ![ImagePattern](https://raw.githubusercontent.com/brogency/image-pattern/master/assets/avatar-finally.jpg)
 
 image_pattern - библиотека для создания шаблонов, изображений и 

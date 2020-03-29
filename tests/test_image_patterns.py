@@ -36,7 +36,7 @@ OFFSET_IMAGE_PATTERN = join(ASSETS_PATH, 'offset-pattern.jpg')
 
 
 def test_version():
-    assert __version__ == '0.0.16'
+    assert __version__ == '0.0.17'
 
 
 @fixture()
