@@ -4,22 +4,19 @@ from typing import (
     Union,
     TYPE_CHECKING,
 )
+from pydantic import BaseModel
 from PIL import Image
 
-from .base import (
-    Drawer,
-    Element,
-    ImageMode,
-)
+from .base import ImageMode
 from ..context import (
     ContextVar,
 )
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from PIL.Image import Image as PillowImage
 
 
-class Canvas(Element):
+class Canvas(BaseModel):
     _type: str = 'Canvas'
     size: Union[Tuple[int, int], ContextVar]
     _image_mode: ImageMode = ImageMode.RGB
