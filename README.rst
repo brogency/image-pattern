@@ -365,7 +365,8 @@ Methods of the object:
 ^^^^^^^^^^^^^^^^^^^^^^
 
 -  render - returns the generated image object of the ``PIL.Image`` type;
--  render\_to\_blob(**save_kwargs) - returns the generated image object of the ``io.BytesIO`` type. Accepts the parameters passed to the method ``PIL.Image.save()``,such as ``quality`` and etc. You cannot pass the image format, as it is saved in ``JPEG``. Made simply for easy use of the generation results.
+-  render\_to\_blob(\*\*save_kwargs) - returns the generated image object of the ``io.BytesIO`` type. Accepts the parameters passed to the method ``PIL.Image.save()``,such as ``quality`` and etc. You cannot pass the image format, as it is saved in ``JPEG``. Made simply for easy use of the generation results.
+
 
 Canvas
 ~~~~~~
