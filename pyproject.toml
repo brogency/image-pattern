@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "image-pattern"
-version = "0.0.17"
+version = "0.0.18"
 description = "Package for creating images, such as social media sharing images and avatars, from declarative templates."
 license = "MIT"
 authors = ["acrius <acrius@mail.ru>"]
@@ -26,6 +26,7 @@ mypy = "^0.770.0"
 ipdb = "^0.13.2"
 ipython = "^7.13"
 django = "^3.0"
+coveralls = "^1.11"
 
 [build-system]
 requires = ["poetry>=0.12"]

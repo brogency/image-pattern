@@ -36,7 +36,7 @@ OFFSET_IMAGE_PATTERN = join(ASSETS_PATH, 'offset-pattern.jpg')
 
 
 def test_version():
-    assert __version__ == '0.0.17'
+    assert __version__ == '0.0.18'
 
 
 @fixture()
@@ -300,14 +300,22 @@ def patterns():
 
 
 def test_simple_pattern(simple_test_pattern: Pattern):
-    image = simple_test_pattern.render_to_blob()
+    image = simple_test_pattern.render_to_blob(
+        quality=100,
+        optimize=True,
+        progressive=True
+    )
     rms = _compare_result_and_purpose_images(image, SIMPLE_IMAGE_PATTERN)
     assert rms == 0
 
 
 def test_small_test_patterns(small_test_patterns: Dict[str, Pattern]):
     for filename, pattern in small_test_patterns.items():
-        image = pattern.render_to_blob()
+        image = pattern.render_to_blob(
+            quality=100,
+            optimize=True,
+            progressive=True
+        )
         rms = _compare_result_and_purpose_images(image, join(ASSETS_PATH, filename))
         assert rms == 0
 
@@ -338,13 +346,24 @@ def test_horizontal_alignment_errors():
 
 def test_image_patterns(patterns: Dict[str, Pattern]):
     for filename, pattern in patterns.items():
-        rms = _compare_result_and_purpose_images(pattern.render_to_blob(), join(ASSETS_PATH, filename))
+        rms = _compare_result_and_purpose_images(
+            pattern.render_to_blob(
+                quality=100,
+                optimize=True,
+                progressive=True
+            ),
+            join(ASSETS_PATH, filename),
+        )
         assert rms == 0
 
 
 def test_offset_pattern():
     pattern = OffsetPattern()
-    image = pattern.render_to_blob()
+    image = pattern.render_to_blob(
+        quality=100,
+        optimize=True,
+        progressive=True
+    )
     _compare_result_and_purpose_images(image, OFFSET_IMAGE_PATTERN)
 
 

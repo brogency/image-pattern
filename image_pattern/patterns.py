@@ -1,11 +1,18 @@
 from __future__ import annotations
-from typing import List, Optional
+from typing import (
+    TYPE_CHECKING,
+    List,
+    Optional,
+)
 from io import BytesIO
 from pydantic import BaseModel
 
 from .context import Context
 from .elements import Canvas
 from .layers import Layer
+
+if TYPE_CHECKING:
+    from PIL import Image
 
 
 class Pattern(BaseModel):
@@ -22,15 +29,23 @@ class Pattern(BaseModel):
 
         return image
 
-    def render_to_blob(self):
+    def render_to_blob(self, **save_kwargs):
+        """
+        :param save_kwargs: params for PIL.Image.save(), such as quality, optimize and progressive.
+        :return: BytesIO object of image.
+        """
         image = self.render()
-        image_blob = get_image_blob(image)
+        image_blob = get_image_blob(image, **save_kwargs)
 
         return image_blob
 
 
-def get_image_blob(image):
+def get_image_blob(image: Image, **save_kwargs):
     blob = BytesIO()
-    image.save(blob, 'JPEG')
+    image.save(
+        blob,
+        'JPEG',
+        **save_kwargs,
+    )
 
     return blob

@@ -364,11 +364,8 @@ The object constructor accepts the following arguments:
 Methods of the object:
 ^^^^^^^^^^^^^^^^^^^^^^
 
--  render - returns the generated image object of the ``PIL.Image``
-   type;
--  render\_to\_blob - returns the generated image object of the
-   ``io.BytesIO`` type. Made simply for easy use of the generation
-   results.
+-  render - returns the generated image object of the ``PIL.Image`` type;
+-  render\_to\_blob(**save_kwargs) - returns the generated image object of the ``io.BytesIO`` type. Accepts the parameters passed to the method ``PIL.Image.save()``,such as ``quality`` and etc. You cannot pass the image format, as it is saved in ``JPEG``. Made simply for easy use of the generation results.
 
 Canvas
 ~~~~~~
@@ -544,6 +541,7 @@ Django
 TODO
 ~~~~
 
+-  [ ] Make it possible to change the image format.
 -  [ ] Do something with the autocomplete to create objects (Since all
    objects are inherited from pydantic.BaseModel, they do not contain
    meta information for the autocomplete. Perhaps should manually write

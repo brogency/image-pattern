@@ -12,11 +12,13 @@ class ImagePatternField(ImageField):
             pattern,
             should_be_created=None,
             context=None,
+            save_params=None,
             **kwargs
     ):
         self.pattern = pattern
         self.should_be_created_callback = should_be_created
         self.context = context
+        self.save_params = save_params or {}
         kwargs['blank'] = True
         super().__init__(**kwargs)
 
@@ -26,7 +28,7 @@ class ImagePatternField(ImageField):
         if self.should_be_created(instance):
             file_name = self.get_file_name()
             context = self.get_context(instance)
-            image = self.pattern(context=context).render_to_blob()
+            image = self.pattern(context=context).render_to_blob(**self.save_params)
             file.save(file_name, image, save=False)
         elif not file._committed:
             file.save(file.name, file.file, save=False)
@@ -64,6 +66,7 @@ class ImagePatternField(ImageField):
             'pattern': self.pattern,
             'context': self.context,
             'should_be_created': self.should_be_created_callback,
+            'save_params': self.save_params,
         })
 
         return name, path, args, kwargs

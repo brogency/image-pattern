@@ -352,7 +352,7 @@ To create a template, you need to override the following attributes:
 #### Methods of the object:
 
 * render - returns the generated image object of the ```PIL.Image``` type;
-* render_to_blob - returns the generated image object of the ```io.BytesIO``` type. Made simply for easy use of the generation results.
+* render_to_blob(**save_kwargs) - returns the generated image object of the ```io.BytesIO``` type. Accepts the parameters passed to the method ```PIL.Image.save()```. such as ```quality``` and etc. [See more](https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.save). You cannot pass the image format, as it is saved in ```JPEG```. Made simply for easy use of the generation results.
 
 ### Canvas
 
@@ -474,6 +474,7 @@ For more information ```ImagePatternField```see the example project in ```./djan
 
 ### TODO
 
+- [ ] Make it possible to change the image format.
 - [ ] Do something with the autocomplete to create objects (Since all objects are inherited from pydantic.BaseModel, they do not contain meta information for the autocomplete. Perhaps should manually write all the constructors.).
 - [ ] Think about using context. Using Context.var() with a string name does not seem to be the best way.
 - [ ] Make it possible to shift within the layer not only to down, but also to the right.
